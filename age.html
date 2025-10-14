@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Age Group</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Select Your Age Group</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="rights.html">Rights</a>
+    <a href="age.html">Quiz</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <div class="container age-container">
+    <h2 class="fade-in">Let's find the perfect quiz for you 🎯</h2>
+    <p class="subtitle">Choose your age group to begin the fun!</p>
+    <button class="quiz-btn" onclick="startQuiz('8-12')">8 - 12 Years</button>
+    <button class="quiz-btn" onclick="startQuiz('13-16')">13 - 16 Years</button>
+  </div>
+
+  <script>
+    function startQuiz(ageGroup) {
+      localStorage.setItem('ageGroup', ageGroup);
+      window.location.href = 'quiz.html';
+    }
+  </script>
+</body>
+</html>
