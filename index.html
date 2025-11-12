@@ -4,13 +4,168 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Children Rights Awareness</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      overflow: hidden;
+      background: linear-gradient(135deg, #f9f0ff, #d0f0fd);
+      height: 100vh;
+      position: relative;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      color: #fff;
+      font-size: 2rem;
+      text-shadow: 3px 3px #ff69b4;
+      display: none;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      display: none;
+    }
+
+    nav a {
+      text-decoration: none;
+      background: #ffcccb;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: bold;
+      color: #fff;
+      transition: 0.3s;
+      box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+    }
+
+    nav a:hover {
+      background: #ff69b4;
+      transform: scale(1.1) rotate(-2deg);
+    }
+
+    .container.cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      padding: 0 20px;
+      display: none;
+    }
+
+    .card {
+      width: 250px;
+      background: linear-gradient(135deg, #ffd1dc, #fff0f5);
+      border-radius: 20px;
+      text-align: center;
+      padding: 20px;
+      cursor: pointer;
+      box-shadow: 3px 3px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 15px;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.05) rotate(-2deg);
+      box-shadow: 5px 5px 20px rgba(0,0,0,0.3);
+    }
+
+    .welcome-btn-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+    }
+
+    .welcome-btn {
+      padding: 20px 40px;
+      font-size: 1.5rem;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.3s, background 0.3s;
+      animation: pulse 1.5s infinite;
+    }
+
+    .welcome-btn:hover {
+      transform: scale(1.1) rotate(-5deg);
+      background: linear-gradient(45deg, #fad0c4, #ff9a9e);
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* ✅ Floating Credit Badge (centered & dark name) */
+    .credit-badge {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 0 15px rgba(255, 105, 180, 0.5);
+      animation: glow 2s infinite alternate, slideIn 1.2s ease-in-out;
+      text-align: center;
+      user-select: none;
+    }
+
+    .credit-badge span {
+      color: #111; /* Dark color for your name */
+      font-weight: 700;
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 10px #ff69b4; }
+      to { box-shadow: 0 0 25px #ffb6c1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translate(-50%, 50px); opacity: 0; }
+      to { transform: translate(-50%, 0); opacity: 1; }
+    }
+
+    /* Bouncing balls */
+    .ball {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.7;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Children Rights Awareness</h1>
-  </header>
 
+  <!-- Welcome button -->
+  <div class="welcome-btn-container">
+    <button class="welcome-btn">👋 Welcome! Click Me</button>
+  </div>
+
+  <!-- Header -->
+  <header>Children Rights Awareness</header>
+
+  <!-- Navigation -->
   <nav>
     <a href="index.html">Home</a>
     <a href="rights.html">Rights</a>
@@ -18,6 +173,7 @@
     <a href="about.html">About</a>
   </nav>
 
+  <!-- Cards -->
   <div class="container cards">
     <div class="card" onclick="window.location.href='rights.html'">
       <img src="images/rights.png" alt="Rights">
@@ -29,12 +185,75 @@
       <h3>Inspiring Stories</h3>
       <p>See how awareness changes lives.</p>
     </div>
-    <div class="card" onclick="window.location.href='quiz.html'">
+    <div class="card" onclick="window.location.href='age.html'">
       <img src="images/quiz.png" alt="Quiz">
       <h3>Rights Quiz</h3>
       <p>Test your knowledge in a fun way!</p>
     </div>
   </div>
+
+  <!-- ✅ Centered Credit Badge -->
+  <div class="credit-badge">
+    💻 Developed by <span>Mohd Junaid Khan</span>
+  </div>
+
+  <audio id="popSound" src="sounds/pop.mp3"></audio>
+
+  <script>
+    const welcomeBtn = document.querySelector('.welcome-btn');
+    const header = document.querySelector('header');
+    const nav = document.querySelector('nav');
+    const cardsContainer = document.querySelector('.container.cards');
+
+    welcomeBtn.addEventListener('click', () => {
+      document.querySelector('.welcome-btn-container').style.display = 'none';
+      header.style.display = 'block';
+      nav.style.display = 'flex';
+      cardsContainer.style.display = 'flex';
+    });
+
+    /* Generate moving balls */
+    const colors = ['#FF9A9E', '#FAD0C4', '#FFD1DC', '#FFF0F5', '#FFB6C1'];
+    const balls = [];
+
+    for(let i=0; i<30; i++){
+      const ball = document.createElement('div');
+      ball.classList.add('ball');
+      const size = Math.random() * 30 + 20;
+      ball.style.width = ball.style.height = size + 'px';
+      ball.style.background = colors[Math.floor(Math.random() * colors.length)];
+      ball.style.left = Math.random() * window.innerWidth + 'px';
+      ball.style.top = Math.random() * window.innerHeight + 'px';
+      document.body.appendChild(ball);
+      balls.push({
+        el: ball,
+        dx: (Math.random() - 0.5) * 4,
+        dy: (Math.random() - 0.5) * 4
+      });
+
+      // Play sound on click
+      ball.addEventListener('click', () => {
+        document.getElementById('popSound').play();
+        ball.style.transform = 'scale(0)';
+        setTimeout(() => ball.style.transform = 'scale(1)', 200);
+      });
+    }
+
+    function animateBalls() {
+      balls.forEach(b => {
+        let x = parseFloat(b.el.style.left);
+        let y = parseFloat(b.el.style.top);
+
+        if(x + b.el.offsetWidth > window.innerWidth || x < 0) b.dx *= -1;
+        if(y + b.el.offsetHeight > window.innerHeight || y < 0) b.dy *= -1;
+
+        b.el.style.left = x + b.dx + 'px';
+        b.el.style.top = y + b.dy + 'px';
+      });
+      requestAnimationFrame(animateBalls);
+    }
+    animateBalls();
+  </script>
+
 </body>
 </html>
-<footer>Developed by MOHD JUNAID KHAN ( Team Lead )</footer>

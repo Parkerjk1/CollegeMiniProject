@@ -1,196 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inspiring Stories | Children Rights Awareness</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      background-color: #fefcfb;
-      color: #333;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Children’s Stories</title>
+<style>
+  /* Reset */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    header {
-      background-color: #6ec1e4;
-      color: white;
-      text-align: center;
-      padding: 1.3rem 0;
-      border-bottom-left-radius: 25px;
-      border-bottom-right-radius: 25px;
-    }
+  body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: linear-gradient(135deg, #ffe5ec, #fef9d7);
+    overflow-x: hidden;
+    position: relative;
+    min-height: 100vh;
+  }
 
-    nav {
-      display: flex;
-      justify-content: center;
-      background-color: #f3f8fa;
-      padding: 0.7rem;
-      gap: 20px;
-      border-bottom: 2px solid #e0f0f5;
-    }
+  header {
+    text-align: center;
+    font-size: 2rem;
+    padding: 40px 20px;
+    color: #fff;
+    text-shadow: 3px 3px #ff69b4;
+  }
 
-    nav a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-      transition: color 0.3s;
-      font-size: 0.95rem;
-    }
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+  }
 
-    nav a:hover {
-      color: #6ec1e4;
-    }
+  nav a {
+    text-decoration: none;
+    background: #ffd700;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    color: #333;
+    transition: transform 0.3s, background 0.3s;
+  }
 
-    .container {
-      max-width: 1000px;
-      margin: 1.5rem auto;
-      padding: 0 1rem;
-    }
+  nav a:hover {
+    background: #ff7f7f;
+    color: #fff;
+    transform: scale(1.1) rotate(-2deg);
+  }
 
-    h2 {
-      text-align: center;
-      color: #444;
-      font-size: 1.6rem;
-      margin-bottom: 1.2rem;
-    }
+  .stories-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 20px;
+  }
 
-    .stories {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.2rem;
-    }
+  .story-card {
+    background: linear-gradient(135deg, #ffd1dc, #fff0f5);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 3px 3px 15px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
 
-    .story-card {
-      background: white;
-      border-radius: 18px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-      padding: 1rem;
-      text-align: center;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      overflow: hidden; /* keep image corners clean */
-    }
+  .story-card:hover {
+    transform: translateY(-10px) scale(1.05) rotate(-2deg);
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.3);
+  }
 
-    .story-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-    }
+  .story-card::before {
+    content: "";
+    position: absolute;
+    top: -40%;
+    left: -40%;
+    width: 180%;
+    height: 180%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,192,203,0.2), transparent 60%);
+    animation: shimmer 6s infinite linear;
+    z-index: 0;
+  }
 
-    /* NEW: wrapper controlling aspect ratio for perfect fitting */
-    .img-wrap {
-      width: 100%;
-      /* choose a pleasant aspect ratio for cards (16/10 here) */
-      aspect-ratio: 16 / 10;
-      border-radius: 14px;
-      overflow: hidden;
-      display: block;
-      background: #eee; /* fallback while image loads */
-    }
+  @keyframes shimmer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
-    .img-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      /* remove border-radius from img itself so the wrapper controls corners consistently */
-      border: 0;
-    }
+  .story-content { position: relative; z-index: 2; }
+  .story-card h3 { color: #ff69b4; margin-bottom: 0.5rem; }
+  .story-card p { color: #333; font-size: 0.95rem; }
 
-    .story-card h3 {
-      color: #2c7da0;
-      margin-top: 0.8rem;
-      font-size: 1.05rem;
-    }
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
 
-    .story-card p {
-      color: #555;
-      font-size: 0.9rem;
-      margin-top: 0.3rem;
-      line-height: 1.4;
-    }
+  .modal-content {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    animation: pop 0.3s ease;
+  }
 
-    .back-btn {
-      display: block;
-      width: fit-content;
-      margin: 2rem auto 1rem;
-      background-color: #6ec1e4;
-      color: white;
-      padding: 0.6rem 1.3rem;
-      border-radius: 22px;
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: background 0.3s;
-    }
+  @keyframes pop {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
 
-    .back-btn:hover {
-      background-color: #55a8c7;
-    }
+  .close-btn {
+    background: #ff69b4;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    cursor: pointer;
+  }
 
-    footer {
-      text-align: center;
-      background-color: #f3f8fa;
-      padding: 0.8rem;
-      color: #555;
-      border-top: 1px solid #e0f0f5;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
+  /* Back/Home Button */
+  .back-btn {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 0.7rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.2s, background 0.3s;
+    font-weight: bold;
+  }
+  .back-btn:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #fad0c4, #ff9a9e);
+  }
 
-    @media (max-width: 600px) {
-      .img-wrap {
-        aspect-ratio: 4 / 3; /* slightly taller on small screens */
-      }
-    }
-  </style>
+  /* Running character */
+  #character {
+    position: fixed;
+    bottom: 20px;
+    left: -100px;
+    width: 80px;
+    height: 80px;
+    z-index: 1000;
+    pointer-events: none;
+    transition: transform 0.1s;
+  }
+
+  /* Bouncing balls */
+  .ball {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.7;
+    cursor: pointer;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Inspiring Stories</h1>
-  </header>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="rights.html">Rights</a>
-    <a href="age.html">Quiz</a>
-    <a href="about.html">About</a>
-  </nav>
+<header>✨ Inspiring Stories for Young Learners ✨</header>
 
-  <div class="container">
-    <h2>Stories That Spark Hope ✨</h2>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="rights.html">Rights</a>
+  <a href="age.html">Quiz</a>
+  <a href="about.html">About</a>
+</nav>
 
-    <div class="stories">
-      <div class="story-card">
-        <div class="img-wrap">
-          <img src="images/story1.jpg" alt="Education Story" />
-        </div>
-        <h3>From Street to School</h3>
-        <p>Aisha once sold flowers on the street. After a local NGO's help, she's now learning and dreaming of becoming a teacher.</p>
-      </div>
+<div class="stories-container" id="stories"></div>
 
-      <div class="story-card">
-        <div class="img-wrap">
-          <img src="images/story2.png" alt="Health Story" />
-        </div>
-        <h3>Healthy Future Ahead</h3>
-        <p>Ravi's village got access to clean water and medical checkups, improving the health of every child there.</p>
-      </div>
+<!-- Running Character -->
+<img id="character" src="images/running-character.gif" alt="Running Character">
 
-      <div class="story-card">
-        <div class="img-wrap">
-          <img src="images/story3.jpg" alt="Equality Story" />
-        </div>
-        <h3>Equal Chances</h3>
-        <p>Zara proved girls can shine too — now she's the first in her community to win a state science award!</p>
-      </div>
-    </div>
+<!-- Back/Home Button -->
+<button class="back-btn" onclick="window.location.href='index.html'">🏠 Home</button>
 
-    <a href="index.html" class="back-btn">← Back to Home</a>
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2 id="modalTitle"></h2>
+    <p id="modalText"></p>
+    <button class="close-btn" id="closeModal">Close</button>
   </div>
+</div>
 
-  <footer>
-    Developed by <strong>MOHD JUNAID KHAN</strong> (Team Lead)
-  </footer>
+<audio id="popSound" src="sounds/pop.mp3"></audio>
+
+<script>
+  // Stories data
+  const stories = [
+    {title:"A School for Everyone", short:"Riya helps her friend return to school after learning about the Right to Education.", text:"Riya loved school, but her friend Arjun had stopped coming because his parents couldn’t afford books. Riya remembered what she learned about the Right to Education. She told her teacher, who helped Arjun get free books under the RTE Act. Soon, Arjun returned to class, smiling brighter than ever. Everyone learned that no child should be left behind when it comes to learning!"},
+    {title:"The Brave Little Voice", short:"Aarav learns that speaking up is a right, not a mistake.", text:"During a class meeting, Aarav hesitated to share his idea for the annual day. Then he remembered a quiz question about ‘Right to Participation’. He spoke up — and his idea of a ‘Clean India’ play won! His classmates clapped, and Aarav realized that every child’s voice matters."},
+    {title:"The Street Without Child Labour", short:"Meena takes a stand against child labour in her neighborhood.", text:"Meena noticed a boy washing dishes at a tea stall. She remembered that children under 14 must not work. She informed her teacher, who contacted authorities. The boy was later enrolled in school. Meena felt proud — she had turned her learning into action."},
+    {title:"Safe Spaces", short:"Tanvi learns how to stay safe and speak up.", text:"After learning about the POCSO Act, Tanvi attended a school safety workshop. She learned that her body belongs to her and that she can say ‘No’ anytime she feels uncomfortable. She taught her friends the same — and together they created a 'Safety Circle' in school."},
+    {title:"Government for Good", short:"How laws protect children everywhere.", text:"When his little brother asked who makes school free, Kabir proudly said, ‘Our government!’ Their teacher explained how the Right to Education and POCSO Acts protect children’s futures. Kabir decided he would grow up to make fair laws too!"},
+    {title:"The Village Library", short:"Children start their own reading revolution.", text:"In a small village, kids built a library using old books. Inspired by the right to learn, they painted the walls with stories and dreams. Soon, even adults joined in to read and learn. The little library became the heart of the village."},
+    {title:"The Wall of Wishes", short:"Children express their rights through art.", text:"A class painted a huge wall titled 'Our Rights'. One child drew a big school, another drew happy families, and one painted herself holding a microphone — her right to speak. The wall became a symbol of hope and color in their town."},
+    {title:"A Promise to Protect", short:"Friends learn to keep each other safe.", text:"After a quiz on safety, three friends decided to look out for one another. They promised to never hide anything that made them uncomfortable and to tell trusted adults. They called it the 'Circle of Care' — and every child soon joined."},
+    {title:"From Streets to Schools", short:"An NGO helps children find classrooms instead of jobs.", text:"Volunteers met street children selling flowers. Instead of scolding, they spoke gently and helped enroll them in school. The children received uniforms, books, and smiles — proving that kindness can rebuild futures."},
+    {title:"The Day I Knew My Rights", short:"Ali discovers how much power children hold.", text:"Ali thought only adults had rights — until his teacher told him about UNCRC. He realized he had the right to be safe, to learn, and to dream. That night, he told his parents proudly, ‘Even kids like me have rights!’ They all smiled."}
+  ];
+
+  const container = document.getElementById('stories');
+  const modal = document.getElementById('modal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalText = document.getElementById('modalText');
+  const closeModal = document.getElementById('closeModal');
+
+  stories.forEach(story => {
+    const card = document.createElement('div');
+    card.className = 'story-card';
+    card.innerHTML = `<div class="story-content"><h3>${story.title}</h3><p>${story.short}</p></div>`;
+    card.addEventListener('click', () => {
+      modalTitle.textContent = story.title;
+      modalText.textContent = story.text;
+      modal.style.display = 'flex';
+    });
+    container.appendChild(card);
+  });
+
+  closeModal.addEventListener('click', ()=>modal.style.display='none');
+  window.addEventListener('click', e=>{if(e.target===modal) modal.style.display='none';});
+
+  // Running character
+  const character = document.getElementById('character');
+  let x=-100; let y=window.innerHeight-120; let dx=3;
+  function moveCharacter(){x+=dx;if(x>window.innerWidth){x=-100;y=Math.random()*(window.innerHeight-150);} character.style.left=x+'px'; character.style.top=y+'px'; requestAnimationFrame(moveCharacter);}
+  moveCharacter();
+  character.addEventListener('mouseenter', ()=>{dx=-dx; character.style.transform='scaleX(-1)';});
+  character.addEventListener('mouseleave', ()=>{character.style.transform='scaleX(1)';});
+
+  // Bouncing balls
+  const colors=['#FF9A9E','#FAD0C4','#FFD1DC','#FFF0F5','#FFB6C1'];
+  const balls=[];
+  for(let i=0;i<20;i++){
+    const ball=document.createElement('div');
+    ball.classList.add('ball');
+    const size=Math.random()*30+20;
+    ball.style.width=ball.style.height=size+'px';
+    ball.style.background=colors[Math.floor(Math.random()*colors.length)];
+    ball.style.left=Math.random()*window.innerWidth+'px';
+    ball.style.top=Math.random()*window.innerHeight+'px';
+    document.body.appendChild(ball);
+    balls.push({el:ball, dx:(Math.random()-0.5)*3, dy:(Math.random()-0.5)*3});
+    ball.addEventListener('click', ()=>{document.getElementById('popSound').play(); ball.style.transform='scale(0)'; setTimeout(()=>ball.style.transform='scale(1)',200);});
+  }
+  function animateBalls(){balls.forEach(b=>{let x=parseFloat(b.el.style.left); let y=parseFloat(b.el.style.top); if(x+b.el.offsetWidth>window.innerWidth||x<0)b.dx*=-1; if(y+b.el.offsetHeight>window.innerHeight||y<0)b.dy*=-1; b.el.style.left=x+b.dx+'px'; b.el.style.top=y+b.dy+'px';}); requestAnimationFrame(animateBalls);}
+  animateBalls();
+</script>
+
 </body>
 </html>
